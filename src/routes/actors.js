@@ -18,8 +18,8 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const {clientId,clientName, clientEmail, clientPhoneNumber} = req.body;
-    const query = await querys.createContact(clientId,clientName, clientEmail, clientPhoneNumber);
+    const {clientName, clientEmail, clientPhoneNumber} = req.body;
+    const query = await querys.createContact(clientName, clientEmail, clientPhoneNumber);
     return res.status(200).json(query);
 });
 
