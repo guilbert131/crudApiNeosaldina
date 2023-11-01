@@ -1,6 +1,6 @@
 # crudApiNeosaldina
 
 Install dependencies
-# npm i
+* npm i
 Run dev mode
-# npm run dev
+* npm run dev
