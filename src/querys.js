@@ -1,40 +1,46 @@
 const connection = require('./connection');
+const moment = require('moment-timezone');
 
 const getAllContacts = async () => {
-    const [query] = await connection.execute('SELECT * FROM db_neosaldina.contacts');
+    const [query] = await connection.execute('SELECT * FROM admin_bf.contacts');
     return query;
 };
 
 const getContactById = async (id) => {
-    const [query] = await connection.execute('SELECT * FROM db_neosaldina.contacts WHERE clientId = ?', [id]);
+    const [query] = await connection.execute('SELECT * FROM admin_bf.contacts WHERE clientId = ?', [id]);
     return query;
 };
 
-const createContact = async (clientId,clientName, clientEmail, clientPhoneNumber) => {
-    const [query] = await connection.execute('INSERT INTO db_neosaldina.contacts (clientId,clientName, clientEmail, clientPhoneNumber) VALUES (?,?,?,?)',
-    [clientId,clientName, clientEmail, clientPhoneNumber]);
+const createContact = async (lead) => {
+    moment.tz.setDefault('America/Sao_Paulo');
+    const dataAtualSaoPaulo = moment();
+    const dataFormatada = dataAtualSaoPaulo.format('DD-MM-YYYY');
+
+    console.log(lead, dataFormatada);
+    const [query] = await connection.execute('INSERT INTO admin_bf.contacts (clientName, clientEmail, clientPhoneNumber, clientIp, createdate) VALUES (?,?,?,?,?)',
+        [lead.clientName, lead.clientEmail, lead.clientPhoneNumber, lead.ip, dataFormatada]);
     const item = await getContactById(query.insertId);
     return item;
 };
 
-const updateContact = async (clientId,clientName, clientEmail, clientPhoneNumber) => {
+const updateContact = async (clientId, clientName, clientEmail, clientPhoneNumber) => {
     const item = await getContactById(clientId);
-    if(item.length === 0){
+    if (item.length === 0) {
         return null;
     }
-    const [query] = await connection.execute('UPDATE db_neosaldina.contacts SET clientName = ?, clientEmail = ?, clientPhoneNumber = ? WHERE clientId = ?;',
-    [clientId,clientName, clientEmail, clientPhoneNumber]);
+    const [query] = await connection.execute('UPDATE admin_bf.contacts SET clientName = ?, clientEmail = ?, clientPhoneNumber = ? WHERE clientId = ?;',
+        [clientId, clientName, clientEmail, clientPhoneNumber]);
     return query;
 };
 
 const deleteContact = async (clientId) => {
     const item = await getContactById(clientId);
-    if(item.length === 0){
+    if (item.length === 0) {
         return null;
     }
-    const [query] = await connection.execute('DELETE FROM db_neosaldina.contacts WHERE clientId = ?;',
-    [clientId]);
+    const [query] = await connection.execute('DELETE FROM admin_bf.contacts WHERE clientId = ?;',
+        [clientId]);
     return query;
 };
 
-module.exports = {getAllContacts, getContactById, createContact, updateContact, deleteContact};
+module.exports = { getAllContacts, getContactById, createContact, updateContact, deleteContact };

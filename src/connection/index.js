@@ -1,11 +1,12 @@
 const mysql = require('mysql2/promise');
+const config = require('../config')
 
 const connection = mysql.createPool({
-    host:'127.0.0.1',
-    port: '3306',
-    database: 'db_neosaldina',
-    user:'root',
-    password:'P@070301'
+    host: config.db.host,
+    port: config.db.port,
+    database: config.db.database,
+    user: config.db.user,
+    password: config.db.password
 });
 
 module.exports = connection;
