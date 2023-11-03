@@ -1,6 +1,6 @@
 module.exports = {
     apps : [{
-      name   : "agregador-api",
+      name   : "neosaldina-api",
       script: "./src/app.js",
       log_file: "./index.log"
     }]
