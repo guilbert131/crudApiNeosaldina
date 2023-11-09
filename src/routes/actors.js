@@ -23,12 +23,11 @@ router.post('/', async (req, res) => {
     try {
         const lead = req.body;
         lead.ip = requestIp.getClientIp(req);
-        console.log(lead);
         const query = await querys.createContact(lead);
-        // const sendNeosaldinaApi = await repository.saveNeosaldinaApi(lead.clientName, lead.clientEmail)
-        // if(sendNeosaldinaApi == false) {
-        //     res.status(500).send({ error: true, messgae: "Erro ao salvar cadastro" })
-        // }
+        const sendNeosaldinaApi = await repository.saveNeosaldinaApi(lead.clientName, lead.clientEmail)
+        if(sendNeosaldinaApi == false) {
+            res.status(500).send({ error: true, messgae: "Erro ao salvar cadastro" })
+        }
         return res.status(200).json({ error: false, message: "cadastro salvo com sucesso!" });
     } catch (error) {
         console.log(error);
