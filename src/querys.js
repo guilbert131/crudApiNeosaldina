@@ -14,7 +14,7 @@ const getContactById = async (id) => {
 const createContact = async (lead) => {
     moment.tz.setDefault('America/Sao_Paulo');
     const dataAtualSaoPaulo = moment();
-    const dataFormatada = dataAtualSaoPaulo.format('YYYY-MM-DD');
+    const dataFormatada = dataAtualSaoPaulo.format('YYYY-MM-DD HH:mm');
     const [query] = await connection.execute('INSERT INTO admin_bf.contacts (clientName, clientEmail, clientPhoneNumber, clientIp, createdate) VALUES (?,?,?,?,?)',
         [lead.clientName, lead.clientEmail, lead.clientPhoneNumber, lead.ip, dataFormatada]);
     const item = await getContactById(query.insertId);
